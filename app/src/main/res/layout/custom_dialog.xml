@@ -26,11 +26,11 @@
 
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnAddAlbum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@color/colorAccent"
-        android:text="login_label"
+        android:text="Add Album"
         android:textColor="@android:color/white" />
 </LinearLayout>

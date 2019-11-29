@@ -8,8 +8,8 @@
 
     <ListView
         android:id="@+id/albums"
-        android:layout_width="match_parent"
-        android:layout_height="458dp"
+        android:layout_width="415dp"
+        android:layout_height="415dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -17,8 +17,8 @@
         android:id="@+id/add_album"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="480dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="436dp"
         android:text="Add Album"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
