@@ -1,22 +1,39 @@
 package com.example.photos.utilities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.Resources;
+import android.provider.SyncStateContract;
+import android.text.InputType;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.photos.AlbumActivity;
+import com.example.photos.Constants;
 import com.example.photos.MainActivity;
+import com.example.photos.R;
 import com.example.photos.models.Photo;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -63,10 +80,71 @@ public class Utilities {
             while((line = br.readLine()) != null){
                 MainActivity.albums.put(line, new HashSet<Photo>());
             }
+            br.close();
+            isr.close();
+            fis.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void writeSerializedObjectToFile(Context context, List<Photo> photos, String filePath) {
+        try {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(context.openFileOutput(filePath, MODE_PRIVATE));
+            objectOutputStream.writeObject(photos);
+            objectOutputStream.close();
+        } catch (FileNotFoundException e) {
+            String msg = "Cannot find file";
+            throw new RuntimeException(msg, e);
+        } catch (IOException e) {
+            String msg = "IOException";
+            throw new RuntimeException(msg, e);
+        }
+    }
+
+
+    public static void displayAlert(Context context, String alertType, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(message);
+        builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    public static void createFileIfNotExists(Context context, String filename) {
+        try {
+            File file = context.getFileStreamPath(filename);
+            if(file == null || !file.exists()) {
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error creating file", e);
+        }
+    }
+
+    public static List<Photo> readSerializedObjectFromFile(Context context, String fileName) {
+        List<Photo> photosInAlbum = new ArrayList<>();
+        try {
+            createFileIfNotExists(context, fileName);
+            ObjectInputStream objectInputStream = new ObjectInputStream(context.openFileInput(fileName));
+            List<Photo> photoList = (ArrayList<Photo>) objectInputStream.readObject();
+            objectInputStream.close();
+            return photoList;
+        } catch (EOFException e) {
+            System.out.println("End of file reached, prevented from throwing");
+        } catch (IOException e) {
+            String msg = "IOException";
+            throw new RuntimeException(msg, e);
+        } catch (ClassNotFoundException e) {
+            String msg = "Could not find class";
+            throw new RuntimeException(msg, e);
+        }
+        return photosInAlbum;
     }
 }

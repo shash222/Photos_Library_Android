@@ -7,15 +7,20 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.*;
 
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static HashMap<String, HashSet<Photo>> albums = new HashMap<String, HashSet<Photo>>();
 
+    private final Context context = this;
+    private static final int PICK_FROM_GALLERY = 1;
+
     ListView albumsList;
     Button addAlbumButton;
 
@@ -45,17 +53,21 @@ public class MainActivity extends AppCompatActivity {
         Utilities.readFile(ALBUM_FILE_NAME, MainActivity.this);
         setUpAddAlbumButton();
 
-
         albumsList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int i, long l){
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PICK_FROM_GALLERY);
+                }
                 currentAlbum = albums.get(albumsList.getItemAtPosition(i).toString());
                 Intent intent = new Intent(MainActivity.this, AlbumActivity.class);
                 intent.putExtra("AlbumName", albumsList.getItemAtPosition(i).toString());
                 startActivity(intent);
+
             }
         });
     }
+
     private void refreshAlbums(){
         List<String> listOfAlbums = new ArrayList<String>(albums.keySet());
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,listOfAlbums);

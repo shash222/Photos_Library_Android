@@ -15,19 +15,16 @@ import java.util.Set;
  */
 public class Photo implements Serializable {
     private String location;
-    private String caption;
     private Map<String, Set<String>> tags;
     private Date dateTaken;
 
     /**
      * Constructor
      * @param location photo filepath
-     * @param caption photo caption
      * @param dateTaken photo date
      */
-    public Photo(String location, String caption, Date dateTaken) {
+    public Photo(String location, Date dateTaken) {
         this.location = location;
-        this.caption = caption;
         this.dateTaken = dateTaken;
         this.tags = new HashMap<>();
     }
@@ -44,14 +41,6 @@ public class Photo implements Serializable {
      * Returns caption
      * @return photo caption
      */
-    public String getCaption() {
-        return this.caption;
-    }
-
-    /**
-     * Returns photo tags
-     * @return photo tags
-     */
     public Map<String, Set<String>> getTags() {
         return this.tags;
     }
@@ -62,14 +51,6 @@ public class Photo implements Serializable {
      */
     public Date getDateTaken() {
         return this.dateTaken;
-    }
-
-    /**
-     * Sets caption
-     * @param caption new caption
-     */
-    public void setCaption(String caption) {
-        this.caption = caption;
     }
 
     /**
