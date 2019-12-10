@@ -92,6 +92,7 @@ public class Utilities {
 
     public static void writeSerializedObjectToFile(Context context, List<Photo> photos, String filePath) {
         try {
+            System.out.println("Photos: " + photos);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(context.openFileOutput(filePath, MODE_PRIVATE));
             objectOutputStream.writeObject(photos);
             objectOutputStream.close();

@@ -5,14 +5,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.DataSetObserver;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -30,27 +38,48 @@ public class AlbumActivity extends AppCompatActivity {
 
     public static String albumName;
     public final Context context = this;
+    static List<Photo> photos;
+    View selected;
 
     private void updateList() {
-        List<Photo> photos = Utilities.readSerializedObjectFromFile(this, String.format(Constants.ALBUM_PATH_FORMAT, albumName));
+        photos = Utilities.readSerializedObjectFromFile(this, String.format(Constants.ALBUM_PATH_FORMAT, albumName));
         TableLayout entryList = findViewById(R.id.entryList);
+        entryList.invalidate();
         entryList.removeAllViews();
 
+        int i = 0;
         for (Photo p : photos) {
             TableRow row = new TableRow(this);
+            row.setClickable(true);
+            row.setId(i++);
+            row.setOnClickListener(new View.OnClickListener() {
+                private void resetBackgroundColors(int idToSkip, TableLayout table) {
+                    int tableSize = table.getChildCount();
+                    for (int i = 0; i < tableSize; i++) {
+                        if (i != idToSkip) table.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
+                    }
+                }
+
+                @Override
+                public void onClick(View view) {
+                    view.setBackgroundColor(Color.LTGRAY);
+                    resetBackgroundColors(view.getId(), (TableLayout) view.getParent());
+                    selected = view;
+                }
+            });
             row.setPadding(0, 5, 0, 5);
             TextView photoLocation = new TextView(this);
-//            photoLocation.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             photoLocation.setText(p.getLocation());
 
             ImageView image = new ImageView(this);
-            image.setPadding(5,0 , 5, 0);
+            image.setPadding(5, 0, 5, 0);
             image.setImageBitmap(BitmapFactory.decodeFile(p.getLocation()));
             row.addView(image);
             row.addView(photoLocation);
             entryList.addView(row);
         }
         entryList.refreshDrawableState();
+
     }
 
     @Override
@@ -58,9 +87,9 @@ public class AlbumActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
 
-        mAlbumName = (TextView)findViewById(R.id.AlbumName);
+        mAlbumName = (TextView) findViewById(R.id.AlbumName);
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
+        if (bundle != null) {
             mAlbumName.setText(bundle.getString("AlbumName"));
             albumName = mAlbumName.getText().toString();
         }
@@ -99,7 +128,7 @@ public class AlbumActivity extends AppCompatActivity {
                             List<Photo> photosInAlbum = Utilities.readSerializedObjectFromFile(context, albumFileName);
                             photosInAlbum.add(photo);
                             Utilities.writeSerializedObjectToFile(context, photosInAlbum, albumFileName);
-                            Utilities.displayAlert(context, "Confirm", "User will be added after closing this box");
+                            Utilities.displayAlert(context, "Confirm", "Please reopen album to see image");
                         } catch (Exception e) {
                             String msg = "Error writing to file";
                             throw new RuntimeException(msg, e);
@@ -117,7 +146,30 @@ public class AlbumActivity extends AppCompatActivity {
             }
         });
         builder.show();
+        TableLayout entryList = findViewById(R.id.entryList);
         updateList();
-
     }
+
+    public void removePhoto(View view) {
+        System.out.println("Attempting to remove");
+        if (selected != null) {
+            String albumFileName = String.format(Constants.ALBUM_PATH_FORMAT, albumName);
+            TableLayout table = (TableLayout) selected.getParent();
+
+            photos.remove(selected.getId());
+            table.refreshDrawableState();
+            Utilities.writeSerializedObjectToFile(this, photos, albumFileName);
+            updateList();
+        }
+    }
+
+    public void viewSlideshow(View view) {
+        Intent intent = new Intent(this, SlideshowActivity.class);
+
+        startActivity(intent);
+    }
+
+
+
+
 }
