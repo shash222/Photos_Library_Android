@@ -27,6 +27,9 @@ public class Photo implements Serializable {
         this.location = location;
         this.dateTaken = dateTaken;
         this.tags = new HashMap<>();
+        this.tags.put("person", new HashSet<String>());
+        this.tags.put("location", new HashSet<String>());
+
     }
 
     /**
@@ -84,7 +87,6 @@ public class Photo implements Serializable {
      */
     public void addTag(String key) {
         if(tags.containsKey(key)) {
-
         } else {
             tags.put(key, new HashSet<String>());
         }

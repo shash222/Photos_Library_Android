@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SlideshowActivity">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="284dp"
+        tools:srcCompat="@tools:sample/avatars[0]" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="111dp"
+        android:layout_height="wrap_content"
+        android:text="Previous"
+        android:onClick="prevPhoto"/>
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="107dp"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:onClick="nextPhoto"/>
+
+    <Button
+        android:id="@+id/editTags"
+        android:layout_width="107dp"
+        android:layout_height="wrap_content"
+        android:text="Edit Tags"
+        android:onClick="viewEditTags"/>
+
+    <Button
+        android:id="@+id/moveToAlbum"
+        android:layout_width="107dp"
+        android:layout_height="wrap_content"
+        android:text="Move to Album" />
+
+    />
+</LinearLayout>

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
-        android:text="Create New"
+        android:text="Move to Album"
         android:textSize="25sp"
         android:textStyle="bold" />
 
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:ems="10"
-        android:hint="Name"
+        android:hint="Album Name"
         android:inputType="textEmailAddress" />
 
 
@@ -31,6 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@color/colorAccent"
-        android:text="Add"
+        android:text="Move"
         android:textColor="@android:color/white" />
 </LinearLayout>
