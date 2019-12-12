@@ -35,4 +35,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/add_album"
         app:layout_constraintTop_toBottomOf="@+id/albums" />
+
+    <Button
+        android:id="@+id/remove_album"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remove Album"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="511dp"
+        app:layout_constraintStart_toEndOf="@id/searchTags"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:onClick="removeAlbum"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

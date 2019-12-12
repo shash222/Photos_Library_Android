@@ -42,6 +42,10 @@ import static com.example.photos.MainActivity.albums;
 
 public class Utilities {
 
+    public static void deleteFile(Context context, String fileName) {
+        context.deleteFile(fileName);
+    }
+
     public static boolean writeToFile(String fileName, List<String> content, Context context) throws IOException {
         FileOutputStream fos = null;
 

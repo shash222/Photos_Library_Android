@@ -33,6 +33,8 @@ import android.content.Context;
 import com.example.photos.models.Photo;
 import com.example.photos.utilities.Utilities;
 
+import static com.example.photos.MainActivity.albums;
+
 public class SearchTagsActivity extends AppCompatActivity {
 
 
@@ -91,18 +93,59 @@ public class SearchTagsActivity extends AppCompatActivity {
                 for (Photo photo : photos) {
                     Set<String> tagNames = photo.getTags().keySet();
 
+
+
+//                    String enteredValue = "";
+//                    for (String album : albums.keySet()) {
+//                        for (Photo p : albums.get(album)) {
+//                            //                Assuming I lave the list of tags from photo
+//                            for (String tagKey : p.getTags().keySet())
+//                                for (String tag : p.getTags().get(tagKey)) {
+//                                    if (tag.indexOf(enteredValue) == 0) {
+//                                        // Print tag
+//                                    }
+//                                }
+//                        }
+//                    }
+
+                    Set<String> locationValues = photo.getTags().get("location");
+                    Set<String> personValues = photo.getTags().get("person");
+                    boolean foundInLocation = false;
                     if (type.equals("and")) {
-                        if (photo.getTags().get("location").contains(locationValue) && photo.getTags().get("person").contains(personValue)) {
-                            finalList.add(photo);
+                        for (String location : locationValues) {
+                            if (location.indexOf(locationValue) == 0) {
+                                foundInLocation = true;
+                            }
                         }
+                        for (String person : personValues) {
+                            if (person.indexOf(personValue) == 0 && foundInLocation) {
+                                finalList.add(photo);
+                            }
+                        }
+//                        if (photo.getTags().get("location").contains(locationValue) && photo.getTags().get("person").contains(personValue)) {
+//                            finalList.add(photo);
+//                        }
                     } else {
-                        if (photo.getTags().get("location").contains(locationValue) || photo.getTags().get("person").contains(personValue)) {
-                            finalList.add(photo);
+                        for (String location : locationValues) {
+                            if (location.indexOf(locationValue) == 0) {
+                                foundInLocation = true;
+                            }
                         }
+                        for (String person : personValues) {
+                            // Prevents duplicates from showing
+                            if (person.indexOf(personValue) == 0 || foundInLocation) {
+                                finalList.add(photo);
+                            }
+                        }
+
+//                        if (photo.getTags().get("location").contains(locationValue) || photo.getTags().get("person").contains(personValue)) {
+//                            finalList.add(photo);
+//                        }
                     }
                 }
             }
         }
+
 
         Intent intent = new Intent(SearchTagsActivity.this, SearchResultsActivity.class);
         startActivity(intent);

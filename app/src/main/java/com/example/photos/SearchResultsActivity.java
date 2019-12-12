@@ -39,6 +39,8 @@ import android.content.Context;
 import com.example.photos.models.Photo;
 import com.example.photos.utilities.Utilities;
 
+import static com.example.photos.MainActivity.albums;
+
 public class SearchResultsActivity extends AppCompatActivity {
 
 
