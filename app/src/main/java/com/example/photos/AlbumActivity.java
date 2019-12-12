@@ -190,6 +190,13 @@ public class AlbumActivity extends Activity {
     public void viewSlideshow(View view) {
         Intent intent = new Intent(this, SlideshowActivity.class);
         intent.putExtra("album",albumName);
+        if(selected != null){
+            intent.putExtra("i",selected.getId());
+        } else {
+            intent.putExtra("i",0);
+
+        }
+
         startActivity(intent);
     }
     @Override

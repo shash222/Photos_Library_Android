@@ -80,6 +80,8 @@ public class EditTagsActivity extends AppCompatActivity {
                     public void onClick(View v){
                         if(!mAlbumName.getText().toString().isEmpty() && !AlbumActivity.photos.get(i).getTags().get("person").contains(mAlbumName.getText().toString())){
                             AlbumActivity.photos.get(i).addTag("person", mAlbumName.getText().toString());
+                            dialog.dismiss();
+
                         } else {
                             Toast.makeText(EditTagsActivity.this, "Error Creating", Toast.LENGTH_SHORT).show();
                         }
@@ -107,6 +109,8 @@ public class EditTagsActivity extends AppCompatActivity {
                     public void onClick(View v){
                         if(!mAlbumName.getText().toString().isEmpty() && !AlbumActivity.photos.get(i).getTags().get("location").contains(mAlbumName.getText().toString())){
                             AlbumActivity.photos.get(i).addTag("location", mAlbumName.getText().toString());
+                            dialog.dismiss();
+
                         } else {
                             Toast.makeText(EditTagsActivity.this, "Error Creating", Toast.LENGTH_SHORT).show();
                         }
@@ -114,6 +118,7 @@ public class EditTagsActivity extends AppCompatActivity {
                     }
                 });
                 refreshAlbums();
+
             }
         });
 

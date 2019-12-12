@@ -31,12 +31,10 @@
         android:id="@+id/slideshowButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/addPhotoButton"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Slideshow"
         android:onClick="viewSlideshow"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="1dp" />
+        android:text="Display/Edit"
+        app:layout_constraintStart_toEndOf="@id/addPhotoButton"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/removePhotoButton"

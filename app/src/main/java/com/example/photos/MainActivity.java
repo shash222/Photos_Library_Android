@@ -44,12 +44,12 @@ public class MainActivity extends AppCompatActivity {
 
     ListView albumsList;
     Button addAlbumButton;
-
+    Button searchTags;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.albums_view);
-
+        searchTags = findViewById(R.id.searchTags);
         Utilities.readFile(ALBUM_FILE_NAME, MainActivity.this);
         setUpAddAlbumButton();
 
@@ -63,7 +63,14 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, AlbumActivity.class);
                 intent.putExtra("AlbumName", albumsList.getItemAtPosition(i).toString());
                 startActivity(intent);
+            }
+        });
 
+        searchTags.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this, SearchTagsActivity.class);
+                startActivity(intent);
             }
         });
     }

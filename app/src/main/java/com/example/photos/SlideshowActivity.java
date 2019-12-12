@@ -48,6 +48,7 @@ public class SlideshowActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             album = (bundle.getString("album"));
+            // i = (bundle.getInt("i"));
         }
 
         move.setOnClickListener(new View.OnClickListener(){
@@ -69,20 +70,27 @@ public class SlideshowActivity extends AppCompatActivity {
                             String albumFileNameNew = String.format(Constants.ALBUM_PATH_FORMAT, mAlbumName.getText().toString());
                             List<Photo> photosInNewAlbum = Utilities.readSerializedObjectFromFile(context, albumFileNameNew);
                             photosInNewAlbum.add(AlbumActivity.photos.get(i));
-                            // MainActivity.albums.get(mAlbumName.getText().toString()).add(AlbumActivity.photos.get(i));
-                            /* NEED TO MAKE IT SUCH THAT IT DELETES THE IMAGE IN THE CURRENT ALBUM
-                            HashSet<Photo> photos =  MainActivity.albums.get(AlbumActivity.albumName);
-                            for(Photo p : photos){
-                                if()
-                            }
-                            MainActivity.albums.get(AlbumActivity.albumName).remove(AlbumActivity.photos.get(i));
-
-                            List<Photo> list = new ArrayList<Photo>(MainActivity.albums.get(AlbumActivity.albumName));
-                            String albumFileNameThis = String.format(Constants.ALBUM_PATH_FORMAT, album);
-                            Utilities.writeSerializedObjectToFile(context, list, albumFileNameThis);
-                            */
-                            // List<Photo> list2 = new ArrayList<Photo>( MainActivity.albums.get(mAlbumName.getText().toString()));
                             Utilities.writeSerializedObjectToFile(context,photosInNewAlbum, albumFileNameNew);
+
+
+                            // MainActivity.albums.get(mAlbumName.getText().toString()).add(AlbumActivity.photos.get(i));
+                            String albumFileNameOld = String.format(Constants.ALBUM_PATH_FORMAT, AlbumActivity.albumName);
+                            List<Photo> photosInOldAlbum = Utilities.readSerializedObjectFromFile(context, albumFileNameOld);
+                            int z = 0;
+                            int index = 0;
+                            for(Photo p : photosInOldAlbum){
+                                if(p.getLocation().equals(AlbumActivity.photos.get(i).getLocation())) {
+                                    index = z;
+                                    break;
+                                }
+                                z++;
+                            }
+                            photosInOldAlbum.remove(index);
+                            Utilities.writeSerializedObjectToFile(context, photosInOldAlbum, albumFileNameOld);
+
+                            // List<Photo> list2 = new ArrayList<Photo>( MainActivity.albums.get(mAlbumName.getText().toString()));
+
+
 
 
                             Intent intent = new Intent(SlideshowActivity.this, MainActivity.class);
